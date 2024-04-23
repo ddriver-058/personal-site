@@ -1,0 +1,6 @@
+MeSummary:
+  - Welcome to my personal site, powered by a self-hosted, on-premises Kubernetes cluster right from my home setup.
+  - |
+  I am a technology professional who focuses on web development, infrastructure, dev ops, and data analysis. In my employment,
+  I greenfielded a production Kubernetes cluster, designed a microservices deployment architecture based on Gitea, ArgoCD, and Knative, as well
+  as authored and deployed dozens of applications in R Shiny.

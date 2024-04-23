@@ -1,0 +1,178 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+data:
+  readConfig.js: |
+    import yaml from 'js-yaml';
+
+    const readConfig = () => {
+      return yaml.load(`
+        Routes:
+          - path: ""
+            import: MeSummary
+          - path: skills-and-experience
+            import: SkillsAndExperience
+          - path: accomplishments-and-accreditations
+            import: AccomplishmentsAndAccreditations
+          - path: argonaut-cluster
+            import: ArgonautCluster
+        Sidebar:
+          "/": 
+            text: About Me
+            icon: person
+          "/skills-and-experience":
+            text: Skills & Experience
+            icon: rocket_launch
+          "/accomplishments-and-accreditations":
+            text: Accomplishments & Accreditations
+            icon: star
+          "/argonaut-cluster":
+            text: Argonaut Cluster
+            icon: view_in_ar
+        MeSummary:
+        - type: header
+          data: About Me
+        - type: text 
+          data: >
+            Welcome to my personal site, powered by a Kubernetes cluster hosted right from my home setup. Named after the famous main gate of Troy,
+            this site is like a gateway to my hometown of Troy, OH.
+        - type: text 
+          data: >
+            I am a technology professional who focuses on web development, infrastructure, dev ops, and data analysis. In my employment,
+            I greenfielded a production Kubernetes cluster on Google Cloud, designed a microservices deployment architecture based on Gitea, ArgoCD, and Knative, as well
+            as authored and deployed over a dozen applications in R Shiny, for organizations ranging from medium-size local businesses to global powerhouses.
+        - type: text 
+          data: >
+            After earning my degree in mathematics from Ohio University, my love of technology flourished through my work as a data analyst. Data and dashboarding evolved
+            into web development and the infrastructure that powers it. I would love to find opportunities to leverage my holistic understanding
+            of technology and my love of both the infrastructural and creative sides of development.
+        - type: text 
+          data: >
+            You can find links to my Linkedin, GitHub, email, and resume on this page. The sidebar will direct you to information about my skills, accomplishments, 
+            projects, and more.
+        SkillsAndExperience:
+          "Infrastructure":
+            - skill: Tools
+              experience: >
+                Kubernetes, GKE, GCE, Terraform, Velero, Ansible, RKE, k3s, Clonezilla, PXE, Knative, nginx, cert-manager, Vagrant
+            - skill: Design & administration of Google Kubernetes Engine (GKE) clusters
+              experience: Greenfielded a GKE cluster during employment as a scalability advancement from existing Docker Compose architecture
+            - skill: Infrastructure as Code with Terraform
+              experience: Used Terraform running on a GCE instance to manage GKE
+            - skill: Regular GKE backups with Velero
+              experience: Configured regular 7d TTL backups of a GKE cluster
+            - skill: Imperative node management via Ansible
+              experience: Authored Argonaut Cluster, which uses Ansible to manage VMs across a local cluster
+            - skill: Local Kubernetes deployment via RKE and k3s
+              experience: Designed a local bare-metal k8s via RKE, and used Argonaut Cluster to design a virtualized local k3s cluster
+            - skill: Automated imaging with Clonezilla
+              experience: As part of the bare-metal RKE design, I used Clonezilla paired with an R plumber HTTP server for a fully automated, MAC-responsive PXE imaging process
+            - skill: Kubernetes microservices via Knative
+              experience: Configured Knative for a GKE cluster
+            - skill: Configuring nginx as a reverse proxy in front of a Google Cloud load balancer
+              experience: Achieved efficient use of cloud resources by routing all GKE cluster traffic through a single LB
+            - skill: Private ingress configuration via IP whitelisting
+              experience: Disallowed traffic from outside the company network from reaching apps via nginx IP whitelisting
+            - skill: Automated certificate management via cert-manager
+              experience: Obtained authorized TLS certificates for all apps and auto-rotated them via cert-manager
+            - skill: Declarative VM configuration via Vagrant
+              experience: Authored Argonaut Cluster, which extends Vagrant to coordinate VMs across a physical cluster
+          "DevOps":
+            - skill: Continuous, declarative deployment via ArgoCD
+              experience: Deployed over a dozen apps and services, including my own R plumber microservices and a Shiny app, to GKE via ArgoCD and Gitea
+            - skill: Tuning Knative microservices via Prometheus metrics
+              experience: Tuned Knative microservice scaling parameters based on observed concurrency metrics
+            - skill: Source code management via Gitea
+              experience: Deployed a Gitea instance as a private source of truth for the organization
+            - skill: Versioned deployment via a private Docker registry
+              experience: Configured a secure Docker registry and used it for version-tagged Helm deployments
+            - skill: Easy access to cluster resources via telepresence
+              experience: Secured microservice endpoints by exposing them only within the cluster and used telepresence to access them locally
+            - skill: Containerized local development environments via Docker Compose & VSCode
+              experience: Used Docker Compose along with in-browser IDE (RStudio) and 'Attach to Running Container' for local conainerized development
+          "Development":
+            - skill: API development with R plumber and node.js Koa
+              experience: Authored over a dozen microservices during employment with R, and used Koa for the Argonaut Cluster API server
+            - skill: Vue 3 web applications via Quasar
+              experience: Used Quasar to build Argonaut Cluster's UI and this site
+            - skill: Vue 3 state management via Pinia
+              experience: Used pinia stores extensively to share data between components in Argonaut Cluster's UI
+            - skill: Dashboarding with Shiny
+              experience: Authored and deployed over a dozen reporting and operational SPAs in R
+            - skill: Separating code and configuration via k8s ConfigMaps
+              experience: Avoided the need to deploy new images on config changes by mounting ConfigMaps as files (including this site's readConfig.js)
+            - skill: Advanced data processing with R tidyverse, data.table and JS lodash, dataForge
+              experience: Used tidyverse extensively for automation and app backends, JS lodash and dataForge for Argonaut cluster
+            - skill: Automation via API calls and reverse-engineered request mimicking
+              experience: Built and maintained a codebase of dozens of automations powered by the ServiceTitan front-end and backend (reverse-engineered) APIs
+            - skill: IPC via WebSockets
+              experience: Used wss:// to transfer process logs from Ansible / SSH to Argonaut Cluster's UI
+            - skill: Data visualization with R plotly
+              experience: Primarily used Plotly to build bar, line, waterfall, etc. charts for Shiny apps
+        AccomplishmentsAndAccreditations:
+          - type: header
+            data: Educational
+          - type: text
+            data: Bachelors of Science, Mathematics from Ohio University (3.98 GPA)
+          - type: text
+            data: Minor, Computer Science (4.00 GPA in relevant courses)
+        ArgonautCluster:
+          - type: header
+            data: Motivation
+          - type: text
+            data: > 
+              After experimenting with a bare-metal Rancher Kubernetes Engine (RKE) cluster in my home lab, I decided a virtualized setup
+              would be far easier to manage due to the features of providers like VirtualBox (such as snapshots, machine suspension, etc.)
+              and the ease of defining the whole lifecycle of the environment as code.
+          - type: text
+            data: >
+              With the goal of powering such a setup while embracing infrastructure as code, I started looking into existing tools. While
+              the libvirt terraform module succeeds in providing declarative control of VMs, configuring a robust setup with libvirt was
+              a complex task. There was already an open tool that made it easy to declaratively control VMs -- Vagrant.
+          - type: text
+            data: >
+              However, Vagrant is only intended to operate on one physical node at a time. Still, I reasoned that it would be straightforward to
+              extend the setup to multiple nodes by controlling the Vagrantfiles of each node from a central configuration. Hence, the idea
+              for Argonaut Cluster was born.
+          - type: text
+            data: >
+              The idea of creating a k8s-like control loop to manage the VMs seemed like taking on too much, so I opted for an imperative approach
+              powered by Ansible. The plan was clear -- create a central configuration from which to template Ansible and Vagrant configuration, 
+              then use Ansible to populate the files and run Vagrant commands. 
+          - type: header
+            data: Development
+          - type: text
+            data: >
+              I ultimately decided to implement the API server in node.js with Koa, and to supply a Vue 3 frontend. I had to decide on a variety
+              of techniques: how to pass data to the playbooks, how to stream playbook process logs to the app, the simplest / most secure way
+              to pass the host's SSH configuration to a docker container, and more. 
+          - type: text
+            data: >
+              There were also user experience challenges: how to make my custom argonaut_cluster.yaml templating easy to test and validate,
+              how to visualize the cluster, how to handle selection mechanics on the cluster graph in the context of VM management, and so on.
+          - type: text
+            data: >
+              While complex, there was nothing that seemed insurmountable for my first large Javascript project. Bit by bit over weeks of
+              development, these problems were solved by implementing technologies like WebSocket, SSH agent forwarding, temporary variable files,
+              cascading selection, and a live-rendering editor interface in the Vue app, so that most of the initial goals for the project were achieved.
+          - type: header
+            data: Launch and moving forward
+          - type: text
+            data: >
+              With that, I published the project on GitHub. In addition, I started making use of the tool to manage a k3s cluster, which is
+              what is being used to host this very site. As time permits, I want to address issues from the community, as well as test the
+              tool on other platforms leading up to a full release.
+          - type: text
+            data: >
+              If you would like to view the source code and documentation, you can do so here: https://github.com/ddriver-058/argonaut-cluster
+            
+          
+      `);
+    };
+
+    export {
+      readConfig
+    };
